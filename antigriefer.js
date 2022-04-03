@@ -1,4 +1,3 @@
-
 // ANTIGRIEF SCRIPT
 //
 // USAGE:
@@ -80,18 +79,8 @@ function sleep(milliseconds) {
 function getColorXY(x, y) {
 	let rangeMin = -4;
 	let rangeMax = 4;
-    let hexColor = monalisaContainer.getCanvasPixelColor({x: x, y: y}).toUpperCase();
-    for (var i in colors) {
-		let rgb1 = hexColor.convertToRGB();
-		let rgb2 = colors[i].hex.convertToRGB();
-		let c1 = rgb1[0] - rgb2[0];
-		let c2 = rgb1[0] - rgb2[0];
-		let c3 = rgb1[0] - rgb2[0];
-		if (c1 > rangeMin && c1 < rangeMax && c2 > rangeMin && c2 < rangeMax && c3 > rangeMin && c3 < rangeMax) {
-            colors[i].number = i;
-            return colors[i];
-        }
-    }
+	let hexColor = monalisaContainer.getCanvasPixelColor({x: x, y: y});
+	return hexColor;
 }
 
 function getColorFromHex(hex) {
@@ -100,6 +89,7 @@ function getColorFromHex(hex) {
 			return i;
 		}
 	}
+	console.log(hex);
 	throw "Unregistered hex color";
 }
 
@@ -112,11 +102,16 @@ function placePixelAntiGrief(xy1, xy2) {
 		let breaker = false;
 		for(var x = 0; x < plan.length; x++) {
 			toHex = plan[y][x];
-			fromHex = getColorXY(x+xy1[0],y+xy1[1])["hex"]
+			fromHex = getColorXY(x+xy1[0],y+xy1[1])
 			if( toHex === fromHex ) {
 				continue;
 			} else {
-				fix = getColorFromHex(toHex)
+                fix = getColorFromHex(toHex)
+                console.log(toHex);
+                console.log(fromHex);
+                console.log(x);
+                console.log(y);
+                console.log(fix);
 				try {
 					monalisaEmbed.setFullScreen(true);
 					monalisaEmbed.showColorPicker = true;
@@ -132,6 +127,32 @@ function placePixelAntiGrief(xy1, xy2) {
 				} catch (error) {
 					console.log('Error: placePixelAntiGrief', error);
 				}
+				breaker = true;
+				break;
+			}
+		}
+		if( breaker ) {
+			break;
+		}
+	}
+}
+
+function debug() {
+	for(var y = 0; y < plan.length; y++) {
+		let breaker = false;
+		for(var x = 0; x < plan.length; x++) {
+			toHex = plan[y][x];
+			fromHex = getColorXY(x+selection_xy1[0],y+selection_xy1[1])
+			if( toHex === fromHex ) {
+				continue;
+			} else {
+                fix = getColorFromHex(toHex)
+                console.log(toHex);
+                console.log(fromHex);
+                console.log(x);
+                console.log(y);
+                console.log(fix);
+				camera.applyPosition({x: x+selection_xy1[0], y: y+selection_xy1[1], zoom: 50});
 				breaker = true;
 				break;
 			}
