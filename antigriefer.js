@@ -90,7 +90,7 @@ function getColorFromHex(hex) {
 		}
 	}
 	console.log(hex);
-	throw "Unregistered hex color";
+	return 22;
 }
 
 function getNextSeconds() {
